@@ -1,0 +1,8 @@
+// The Round Table
+digraph {
+	A [label=God]
+	B [label=Humans]
+	C [label=Animals]
+	A -> B
+	A -> C
+}
