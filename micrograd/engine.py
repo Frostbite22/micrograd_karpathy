@@ -59,16 +59,29 @@ class Value:
 
   def __radd__(self, other): # other + self
     return self + other
+  
+  def __repr__(self) -> str:
+    return f"Value(data={self.data}, grad={self.grad})"
 
   def tanh(self):
     x = self.data
     t = (math.exp(2*x) - 1)/(math.exp(2*x) + 1)
     out = Value(t, (self, ), 'tanh')
-    
+ 
     def _backward():
       self.grad += (1 - t**2) * out.grad
     out._backward = _backward
     
+    return out
+  
+  def relu(self):
+    x = self.data
+    out = Value(max(0, x), (self,), 'relu')
+
+    def _backward():
+        self.grad += (x > 0) * out.grad
+    out._backward = _backward
+
     return out
   
   def exp(self):
